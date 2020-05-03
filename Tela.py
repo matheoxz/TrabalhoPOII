@@ -2,6 +2,22 @@ from tkinter import *
 from tkinter import messagebox
 import fourFn
 import funcoes
+import matplotlib.pyplot as plt
+
+def Grafico(f, d, a, b):
+    x=[]
+    y=[]
+
+    x.append(a)
+    y.append(fourFn.strToFunc(f.replace("x", str(a))))
+    while(a<b):
+        a+=d
+        x.append(a)
+        y.append(fourFn.strToFunc(f.replace("x", str(a))))
+    plt.plot(x,y)
+    plt.show()
+
+
 
 def Click():
     try:
@@ -10,14 +26,18 @@ def Click():
         a = float(aEntry.get())
         b = float(bEntry.get())
         op = optionVar.get()
+        gr = graficoVar.get()
     except Exception as e:
         messagebox.showwarning("Erro", "Coloque todos os valores nos campos!")
     else:
         #abre nova janela
         resW = Toplevel()
-        resW.title("Resultado")
+        if(gr):
+            Grafico(f, d, a, b)
+        
 
         if( op == 0):
+            resW.title("Busca Uniforme")
             #poe haders da tabela
             Label(resW, text = "k").grid(row = 0, column = 0)
             Label(resW, text = "x").grid(row = 0, column = 1)

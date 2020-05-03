@@ -38,7 +38,7 @@ def BuscaUniforme(f, d, a, b):
                 resultados.append("REFINAMENTO")
                 d /= 10
                 b = xk
-                xk = xa
+                xk = xa 
                 k = 0
                 ref = False
                 fa = f.replace("x", str(x))
