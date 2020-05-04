@@ -25,18 +25,18 @@ def Click():
         d = float(delta.get())
         a = float(aEntry.get())
         b = float(bEntry.get())
+        ep = float(eEntry.get())
         op = optionVar.get()
         gr = graficoVar.get()
+        
     except Exception as e:
         messagebox.showwarning("Erro", "Coloque todos os valores nos campos!")
     else:
         #abre nova janela
         resW = Toplevel()
-        if(gr):
-            Grafico(f, d, a, b)
         
-
-        if( op == 0):
+        
+        if(op == 0):
             resW.title("Busca Uniforme")
             #poe haders da tabela
             Label(resW, text = "k").grid(row = 0, column = 0)
@@ -50,24 +50,62 @@ def Click():
             r = 1
             c = 0
             for i in lista:
-                if (i == "REFINAMENTO"):
-                    Label(resW, text = i).grid(row = r, column = c)
-                    r+=1
-                    continue
+                if (type(i) is str):
+                        Label(resW, text = i).grid(row = r, column = c)
+                        r+=1
+                        continue
                 for j in i:
                     Label(resW, text = str(j)).grid(row = r, column = c)
                     c+=1
                 c=0
                 r+=1
 
+        elif(op == 1):
+            resW.title("Busca Dicotomica")
+            #poe haders da tabela
+            Label(resW, text = "a").grid(row = 0, column = 0)
+            Label(resW, text = "b").grid(row = 0, column = 1)
+            Label(resW, text= "x").grid(row = 0, column = 2)
+            Label(resW, text= "z").grid(row = 0, column = 3)
+            Label(resW, text= "fx").grid(row = 0, column = 4)
+            Label(resW, text= "fz").grid(row = 0, column = 5)
+            Label(resW, text= "fx>fz?").grid(row = 0, column = 6)
+            Label(resW, text= "(b-a)").grid(row = 0, column = 7)
+            #executa funcao
+            lista = funcoes.BuscaDicotomica(f, d, a, b, ep)
+            r = 1
+            c = 0
+            for i in lista:
+                if (type(i) is str):
+                        Label(resW, text = i).grid(row = r, column = c)
+                        r+=1
+                        continue
+                for j in i:
+                    Label(resW, text = str(j)).grid(row = r, column = c)
+                    c+=1
+                c=0
+                r+=1
 
+        elif(op == 2):
+            resW.title("Seção Áurea")
 
+        elif(op == 3):
+            resW.title("Busca de Fibonacci")
 
+        elif(op == 4):
+            resW.title("Bisseção")
+
+        elif(op == 5):
+            resW.title("Newton")
+
+        if(gr):
+            Grafico(f, d, a, b)
+        
 
 root = Tk()
 root.title("Trabalho 1")
 #frames
-optionsF = LabelFrame(root, text="Opções", )
+optionsF = LabelFrame(root, text="Opções")
 dataF = LabelFrame(root, text="Dados")
 #Variaveis
 optionVar = IntVar()
@@ -83,13 +121,16 @@ newtonRB = Radiobutton(optionsF, text="Newton", variable = optionVar, value = 5)
 graficoCB = Checkbutton(root, text="Gerar Gráfico", variable = graficoVar)
 #Entradas
 funcao = Entry(dataF)
-funcao.insert(0, "e^x-x^3+1")
+funcao.insert(0, "x*sin(PI*x)")
 delta = Entry(dataF)
-delta.insert(0, "0.35")
+delta.insert(0, "0.03")
+eEntry = Entry(dataF)
+eEntry.insert(0, "0.1")
 aEntry = Entry(dataF, width=5)
-aEntry.insert(0, "-1")
+aEntry.insert(0, "1.5")
 bEntry = Entry(dataF, width = 5)
-bEntry.insert(0, "6")
+bEntry.insert(0, "2.5")
+
 #Botoes
 botao = Button(root, text = "Calcular!", command = Click).grid(row= 6, column = 1, sticky = W+E)
 
@@ -98,11 +139,13 @@ botao = Button(root, text = "Calcular!", command = Click).grid(row= 6, column = 
 #Labels
 funcaoLabel = Label(dataF, text = "min f(x) = ").grid(row= 1, column = 1)
 deltaLabel = Label(dataF, text = "Δ = ").grid(row= 2, column = 1)
+epsolonLabel = Label(dataF, text = "ε = ").grid(row = 3, column = 1)
 saLabel = Label(dataF, text = "s. a: { ").grid(row= 5, column= 1)
 xLabel = Label(dataF, text = "≤x≤").grid(row= 5, column = 3)
 #Entrys
 funcao.grid(row = 1, column= 2, sticky=W+E, columnspan = 3)
 delta.grid(row = 2, column= 2, sticky=W+E, columnspan = 3)
+eEntry.grid(row = 3, column = 2, sticky = W+E, columnspan = 3)
 aEntry.grid(row= 5, column = 2, sticky=W+E)
 bEntry.grid(row= 5, column = 4, sticky=W+E)
 #Radio Buttons
