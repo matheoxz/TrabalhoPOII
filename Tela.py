@@ -67,9 +67,9 @@ def Click():
             Label(resW, text = "b").grid(row = 0, column = 1)
             Label(resW, text= "x").grid(row = 0, column = 2)
             Label(resW, text= "z").grid(row = 0, column = 3)
-            Label(resW, text= "fx").grid(row = 0, column = 4)
-            Label(resW, text= "fz").grid(row = 0, column = 5)
-            Label(resW, text= "fx>fz?").grid(row = 0, column = 6)
+            Label(resW, text= "f(x)").grid(row = 0, column = 4)
+            Label(resW, text= "f(z)").grid(row = 0, column = 5)
+            Label(resW, text= "f(x)>f(z)?").grid(row = 0, column = 6)
             Label(resW, text= "(b-a)").grid(row = 0, column = 7)
             #executa funcao
             lista = funcoes.BuscaDicotomica(f, d, a, b, ep)
@@ -88,9 +88,63 @@ def Click():
 
         elif(op == 2):
             resW.title("Seção Áurea")
+            #poe haders da tabela
+            Label(resW, text = "k").grid(row = 0, column = 0)
+            Label(resW, text = "a").grid(row = 0, column = 1)
+            Label(resW, text= "b").grid(row = 0, column = 2)
+            Label(resW, text= "(b-a)").grid(row = 0, column = 3)
+            Label(resW, text= "µ").grid(row = 0, column = 4)
+            Label(resW, text= "λ").grid(row = 0, column = 5)
+            Label(resW, text= "f(µ)").grid(row = 0, column = 6)
+            Label(resW, text= "f(λ)").grid(row = 0, column = 7)
+            Label(resW, text= "f(µ) > ou < f(λ)?").grid(row = 0, column = 8)
+            #executa funcao
+            lista = funcoes.SecaoAurea(f, a, b, ep)
+            r = 1
+            c = 0
+            for i in lista:
+                if (type(i) is str):
+                        Label(resW, text = i).grid(row = r, column = c, columnspan = 3)
+                        r+=1
+                        continue
+                for j in i:
+                    Label(resW, text = str(j)).grid(row = r, column = c)
+                    c+=1
+                c=0
+                r+=1
 
         elif(op == 3):
             resW.title("Busca de Fibonacci")
+             #poe haders da tabela
+            Label(resW, text = "k").grid(row = 0, column = 0)
+            Label(resW, text = "a").grid(row = 0, column = 1)
+            Label(resW, text= "b").grid(row = 0, column = 2)
+            Label(resW, text= "(b-a)").grid(row = 0, column = 3)
+            Label(resW, text= "µ").grid(row = 0, column = 4)
+            Label(resW, text= "λ").grid(row = 0, column = 5)
+            Label(resW, text= "f(µ)").grid(row = 0, column = 6)
+            Label(resW, text= "f(λ)").grid(row = 0, column = 7)
+            Label(resW, text= "f(µ) > ou < f(λ)?").grid(row = 0, column = 8)
+            #executa funcao
+            lista = funcoes.SecaoFibonacci(f, a, b, ep)
+            r = 1
+            c = 0
+            for i in lista:
+                o = 0
+                if (type(i) is str):
+                        if(o == 1):
+                            Label(resW, text = i).grid(row = r, column = c, columnspan = 5)
+                            c+=5
+                        else:
+                            Label(resW, text = i).grid(row = r, column = c, columnspan = 2)
+                            c+=2
+                        o+=1
+                        continue
+                for j in i:
+                    Label(resW, text = str(j)).grid(row = r, column = c)
+                    c+=1
+                c=0
+                r+=1
 
         elif(op == 4):
             resW.title("Bisseção")
@@ -121,15 +175,15 @@ newtonRB = Radiobutton(optionsF, text="Newton", variable = optionVar, value = 5)
 graficoCB = Checkbutton(root, text="Gerar Gráfico", variable = graficoVar)
 #Entradas
 funcao = Entry(dataF)
-funcao.insert(0, "x*sin(PI*x)")
+funcao.insert(0, "x^3-x^2-x+3")
 delta = Entry(dataF)
 delta.insert(0, "0.03")
 eEntry = Entry(dataF)
-eEntry.insert(0, "0.1")
+eEntry.insert(0, "0.01")
 aEntry = Entry(dataF, width=5)
-aEntry.insert(0, "1.5")
+aEntry.insert(0, "0")
 bEntry = Entry(dataF, width = 5)
-bEntry.insert(0, "2.5")
+bEntry.insert(0, "2")
 
 #Botoes
 botao = Button(root, text = "Calcular!", command = Click).grid(row= 6, column = 1, sticky = W+E)
