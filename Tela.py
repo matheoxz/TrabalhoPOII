@@ -35,7 +35,6 @@ def Click():
         #abre nova janela
         resW = Toplevel()
         
-        
         if(op == 0):
             resW.title("Busca Uniforme")
             #poe haders da tabela
@@ -63,21 +62,23 @@ def Click():
         elif(op == 1):
             resW.title("Busca Dicotomica")
             #poe haders da tabela
-            Label(resW, text = "a").grid(row = 0, column = 0)
-            Label(resW, text = "b").grid(row = 0, column = 1)
-            Label(resW, text= "x").grid(row = 0, column = 2)
-            Label(resW, text= "z").grid(row = 0, column = 3)
-            Label(resW, text= "f(x)").grid(row = 0, column = 4)
-            Label(resW, text= "f(z)").grid(row = 0, column = 5)
-            Label(resW, text= "f(x)>f(z)?").grid(row = 0, column = 6)
-            Label(resW, text= "(b-a)").grid(row = 0, column = 7)
+            Label(resW, text= "k").grid(row = 0, column = 0)
+            Label(resW, text = "a").grid(row = 0, column = 1)
+            Label(resW, text = "b").grid(row = 0, column = 2)
+            Label(resW, text= "(b-a)").grid(row = 0, column = 3)
+            Label(resW, text= "x").grid(row = 0, column = 4)
+            Label(resW, text= "z").grid(row = 0, column = 5)
+            Label(resW, text= "f(x)").grid(row = 0, column = 6)
+            Label(resW, text= "f(z)").grid(row = 0, column = 7)
+            Label(resW, text= "f(x)>f(z)?").grid(row = 0, column = 8)
+            
             #executa funcao
             lista = funcoes.BuscaDicotomica(f, d, a, b, ep)
             r = 1
             c = 0
             for i in lista:
                 if (type(i) is str):
-                        Label(resW, text = i).grid(row = r, column = c)
+                        Label(resW, text = i).grid(row = r, column = c, columnspan = 2)
                         r+=1
                         continue
                 for j in i:

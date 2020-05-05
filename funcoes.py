@@ -53,13 +53,15 @@ def BuscaDicotomica(f, d, a, b, ep):
         z = ((a+b)/2)+d
         fx = fourFn.strToFunc(f.replace("x", str(x))) 
         fz = fourFn.strToFunc(f.replace("x", str(z)))
-        dic = [a, b, x, z, fx, fz, (fx>fz), (b-a)]
+        dic = [k, a, b, (b-a), x, z, fx, fz, (fx>fz)]
         resultados.append(dic)
         if(fx > fz):
             a = x
         else:
             b = z
         k+=1
+        dic = [k, a, b, (b-a)]
+    resultados.append(dic)
     resultados.append("x* = "+str((a+b)/2))
     return resultados
 
@@ -88,6 +90,8 @@ def SecaoAurea(f, a, b, ep):
         resultados.append(ap)
        # print(ap)
         k+=1
+        ap = [k, a, b, (b-a)]
+    resultados.append(ap)
     resultados.append("x* = " + str((a+b)/2))
     return resultados
 
@@ -133,8 +137,11 @@ def SecaoFibonacci(f, a, b, ep):
             micra = a + (fib[n-k-2]/fib[n-k])*(b-a)
             ap.append("<")
         resultados.append(ap)
-       # print(ap)
         k+=1
+        ap = [k, a, b, (b-a)]
+       # print(ap)
+        
+    resultados.append(ap)
     resultados.append("n = " + str(n))
     resultados.append("F[ ] = " + str(fib))
     resultados.append("x* = " + str((a+b)/2))
