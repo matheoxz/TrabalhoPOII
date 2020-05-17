@@ -3,6 +3,8 @@ from tkinter import messagebox
 import fourFn
 import sys
 import numpy as np
+import sympy as sympy
+import math
 
 def BuscaUniforme(f, d, a, b):
     #inicia variaveis
@@ -46,6 +48,10 @@ def BuscaUniforme(f, d, a, b):
     return resultados
 
 def BuscaDicotomica(f, d, a, b, ep):
+    dic = ["-"]
+    if(ep < 0.7):
+        #valores de epsilon muito pequenos fazem muitas iterações e travam a execução
+        ep = 0.7
     k = 1
     resultados=[]
     while((b-a) >= ep):
@@ -68,6 +74,7 @@ def BuscaDicotomica(f, d, a, b, ep):
 def SecaoAurea(f, a, b, ep):
     k = 1
     resultados = []
+    ap = ["-"]
     alpha = (-1+np.sqrt(5))/2
     beta = 1-alpha
     micra = a + beta*(b-a)
@@ -105,6 +112,7 @@ def fibonacci(n):
         return fibonacci(n-1) + fibonacci(n-2)
 
 def SecaoFibonacci(f, a, b, ep):
+    ap = ["-"]
     n = 0
     MaxIt = int((b-a)/ep)
     #print("max: " + str(MaxIt))
@@ -146,6 +154,121 @@ def SecaoFibonacci(f, a, b, ep):
     resultados.append("F[ ] = " + str(fib))
     resultados.append("x* = " + str((a+b)/2))
     return resultados
+
+def DerPrim(f):
+    func_d1 = sympy.diff(f)
+    f1 = str(func_d1)
+    f1 = f1.replace("**", "^")
+    f1 = f1.replace("exp", "e^")
+    f1 = f1.replace(" ", "")
+    return f1
+
+def DerSeg(f):
+    f = f.replace('e', 'E')
+    f1 = DerPrim(f)
+    f1 = str(f1)
+    f1 = f1.replace("**", "^")
+    f1 = f1.replace("exp", "e^")
+    f1 = f1.replace(" ", "")
+    f1 = f1.replace('e', 'E')
+    func_d2 = sympy.diff(f1)
+    f2 = str(func_d2)
+    f2 = f2.replace("**", "^")
+    f2 = f2.replace("exp", "e^")
+    f2 = f2.replace(" ", "")
+    return str(f2)
+
+def Bissecao(f, a, b, ep):
+    #calcula n iterações
+    N=math.ceil(math.log(1/(ep/(b-a)),2))
+
+    #inicia variáveis e vetor de resultados
+    k=1
+    ver = 'F'
+    resultados = []
+    ap = ["-"]
+
+    #faz derivada e trata string
+    f=f.replace("e", "E")
+    f1=DerPrim(f)
+
+    #calcula valor da derivada
+    sf1 = fourFn.strToFunc(f1.replace('x', str((a+b)/2)))
+    
+    #começa iterações
+    while(k<=N and sf1>10**(-10)):
+        x=(a+b)/2
+        sf1=fourFn.strToFunc(f1.replace("x", str(x)))
+        if(sf1<0):
+            a=x
+            ver='F'
+        elif(sf1>0):
+            b=x
+            ver='V'
+        elif(sf1==0):
+            ver='F'
+        ap=[k, a, b, x, sf1, ver]
+        resultados.append(ap)
+        k+=1
+    x=(a+b)/2
+    ap=[k, a, b, x, sf1, ver]
+    resultados.append(ap)
+    resultados.append("N = " + str(N)+"  f'(x)= " + f1) 
+    resultados.append("x* = " + str(x))
+    return resultados
+
+def max(x,y):
+    if (x>y):
+        return x
+    else:
+        return y
+    
+def Newton(f, a, ep):
+    #inicia variaveis
+    x=a
+    k=1
+    resultados = []
+    condicao1 = True
+    condicao2 = True
+
+    f = f.replace("e", "E")
+    f1 = DerPrim(f)
+    sf1 = fourFn.strToFunc(f1.replace('x', '(' + str(x)+ ')'))
+
+    f2 = DerSeg(f)
+    sf2=fourFn.strToFunc(f2.replace('x', '(' + str(x) + ')'))
+    
+    if(abs(sf1)<ep):
+        ap=[k, x, sf1, "-", "-", "-"]
+        resultados.append(ap)
+        resultados.append("f'(x)= " + str(sf1))
+        resultados.append("x* = " + str(x))
+        return resultados
+    else: 
+        while (condicao1 and condicao2 ):
+            sf2=fourFn.strToFunc(f2.replace('x', str(x)))
+            xp=x-sf1/sf2 
+            if(sf2>10**(-10)):
+                sf1=fourFn.strToFunc(f1.replace('x', str(xp)))
+                sf2=fourFn.strToFunc(f2.replace('x', str(xp)))
+                if(abs(sf1)>ep):
+                    condicao1 = True
+                    if((abs(xp-x)/max(sf2,1))>ep):
+                        condicao2=True
+                else:
+                    condicao1=False
+                    condicao2='-'
+            x=xp
+            ap=[k, x, sf1, sf2, condicao1, condicao2]
+            resultados.append(ap)
+            #if not (condicao1=='V' and condicao2=='V')
+                   #break
+            k+=1
+            if(k > 50):
+                break
+        resultados.append("f'(x)= " + f1 + "f''(x)= " + f2)
+        resultados.append("x* = " + str(x))
+        return resultados
 
 
 

@@ -17,20 +17,26 @@ def Grafico(f, d, a, b):
     plt.plot(x,y)
     plt.show()
 
+def Info():
+    messagebox.showinfo("Feito por", "Matheus Sinto Novaes - 181025981 \n Inaê Soares de Figueiredo - 181021651 \n Thiago La Scala - 181025655")
 
 
 def Click():
     try:
         f = funcao.get()
-        d = float(delta.get())
+        d = abs(float(delta.get()))
         a = float(aEntry.get())
         b = float(bEntry.get())
-        ep = float(eEntry.get())
+        if(a > b):
+            aux = a
+            a = b
+            b = aux
+        ep = abs(float(eEntry.get()))
         op = optionVar.get()
         gr = graficoVar.get()
         
     except Exception as e:
-        messagebox.showwarning("Erro", "Coloque todos os valores nos campos!")
+        messagebox.showwarning("Erro", "Coloque todos os valores nos campos!\n Caso a função não utilize o campo deixado vazio, coloque um 0")
     else:
         #abre nova janela
         resW = Toplevel()
@@ -50,7 +56,7 @@ def Click():
             c = 0
             for i in lista:
                 if (type(i) is str):
-                        Label(resW, text = i).grid(row = r, column = c)
+                        Label(resW, text = i).grid(row = r, column = c, columnspan = 6)
                         r+=1
                         continue
                 for j in i:
@@ -149,14 +155,54 @@ def Click():
 
         elif(op == 4):
             resW.title("Bisseção")
+            Label(resW, text = "k").grid(row = 0, column = 0)
+            Label(resW, text = "a").grid(row = 0, column = 1)
+            Label(resW, text= "b").grid(row = 0, column = 2)
+            Label(resW, text= "x").grid(row = 0, column = 3)
+            Label(resW, text= "f'(x)").grid(row = 0, column = 4)
+            Label(resW, text= "f'(x) > 0?").grid(row = 0, column = 5)
 
+            lista = funcoes.Bissecao(f, a, b, ep)
+            r = 1
+            c = 0
+            for i in lista:
+                if (type(i) is str):
+                        Label(resW, text = i).grid(row = r, column = c, columnspan = 6)
+                        r+=1
+                        continue
+                for j in i:
+                    Label(resW, text = str(j)).grid(row = r, column = c)
+                    c+=1
+                c=0
+                r+=1
+        
         elif(op == 5):
             resW.title("Newton")
+            Label(resW, text = "k").grid(row = 0, column = 0)
+            Label(resW, text = "x").grid(row = 0, column = 1)
+            Label(resW, text= "f'(x)").grid(row = 0, column = 2)
+            Label(resW, text= "f''(x)").grid(row = 0, column = 3)
+            Label(resW, text= "|f'(x)| > ε?").grid(row = 0, column = 4)
+            Label(resW, text= "|xi-xi-1|/max{|xi|,1} > ε?").grid(row = 0, column = 5)
+
+            lista = funcoes.Newton(f, a, ep)
+            r = 1
+            c = 0
+            for i in lista:
+                if (type(i) is str):
+                        Label(resW, text = i).grid(row = r, column = c, columnspan = 6)
+                        r+=1
+                        continue
+                for j in i:
+                    Label(resW, text = str(j)).grid(row = r, column = c)
+                    c+=1
+                c=0
+                r+=1
 
         if(gr):
-            Grafico(f, d, a, b)
+            Grafico(f, 0.01, a, b)
         
-
+#executa tela
 root = Tk()
 root.title("Trabalho 1")
 #frames
@@ -176,18 +222,19 @@ newtonRB = Radiobutton(optionsF, text="Newton", variable = optionVar, value = 5)
 graficoCB = Checkbutton(root, text="Gerar Gráfico", variable = graficoVar)
 #Entradas
 funcao = Entry(dataF)
-funcao.insert(0, "x^3-x^2-x+3")
+funcao.insert(0, "x^2-x*e^-x")
 delta = Entry(dataF)
-delta.insert(0, "0.03")
+delta.insert(0, "0.04")
 eEntry = Entry(dataF)
 eEntry.insert(0, "0.01")
 aEntry = Entry(dataF, width=5)
-aEntry.insert(0, "0")
+aEntry.insert(0, "0.1")
 bEntry = Entry(dataF, width = 5)
-bEntry.insert(0, "2")
+bEntry.insert(0, "3")
 
 #Botoes
-botao = Button(root, text = "Calcular!", command = Click).grid(row= 6, column = 1, sticky = W+E)
+info = Button(root, text = "i", command = Info).grid(row = 6, column = 1, sticky = E)
+botao = Button(root, text = "Calcular!", command = Click).grid(row= 6, column = 2, sticky = W+E)
 
 
 #Inserções na tela
@@ -211,8 +258,8 @@ fibonacciRB.grid(row= 1, column=4)
 bissecaoRB.grid(row=2, column=4)
 newtonRB.grid(row=3, column=4)
 #Frames
-dataF.grid(row=0, column=0, sticky= W+E+N+S)
-optionsF.grid(row=0, column=1, sticky= W+E+N+S)
+dataF.grid(row=0, column=0, sticky= W+E+N+S, columnspan = 2)
+optionsF.grid(row=0, column=2, sticky= W+E+N+S)
 #CheckButton
 graficoCB.grid(row=6, column=0, sticky=W)
 
